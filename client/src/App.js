@@ -1,6 +1,8 @@
 // /client/App.js
 import React, { Component } from 'react';
 import axios from 'axios';
+import './style.scss';
+
 
 class App extends Component {
   // initialize our state
@@ -68,7 +70,7 @@ class App extends Component {
     parseInt(idTodelete);
     let objIdToDelete = null;
     this.state.data.forEach((dat) => {
-      if (dat.id == idTodelete) {
+      if (dat.id === idTodelete) {
         objIdToDelete = dat._id;
       }
     });
@@ -86,7 +88,7 @@ class App extends Component {
     let objIdToUpdate = null;
     parseInt(idToUpdate);
     this.state.data.forEach((dat) => {
-      if (dat.id == idToUpdate) {
+      if (dat.id === idToUpdate) {
         objIdToUpdate = dat._id;
       }
     });
@@ -122,8 +124,8 @@ class App extends Component {
             placeholder="add something in the database"
             style={{ width: '200px' }}
           />
-          <button onClick={() => this.putDataToDB(this.state.message)}>
-            ADD
+        <button className="create" onClick={() => this.putDataToDB(this.state.message)}>
+            Create
           </button>
         </div>
         <div style={{ padding: '10px' }}>
@@ -133,8 +135,8 @@ class App extends Component {
             onChange={(e) => this.setState({ idToDelete: e.target.value })}
             placeholder="put id of item to delete here"
           />
-          <button onClick={() => this.deleteFromDB(this.state.idToDelete)}>
-            DELETE
+        <button className="delete" onClick={() => this.deleteFromDB(this.state.idToDelete)}>
+            Delete
           </button>
         </div>
         <div style={{ padding: '10px' }}>
@@ -150,12 +152,12 @@ class App extends Component {
             onChange={(e) => this.setState({ updateToApply: e.target.value })}
             placeholder="put new value of the item here"
           />
-          <button
+        <button className="update"
             onClick={() =>
               this.updateDB(this.state.idToUpdate, this.state.updateToApply)
             }
           >
-            UPDATE
+            Update
           </button>
         </div>
       </div>

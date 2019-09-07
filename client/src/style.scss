@@ -1,0 +1,27 @@
+
+$red : rgba(214, 51, 51, 0.95);
+$green: rgba(84, 214, 51, 0.95);
+$yellow: rgba(245, 223, 73, 0.95);
+
+button {
+  padding: 5px;
+  margin: 10px;
+  border: 0.5px solid rgb(218, 218, 218);
+  border-radius: 10px;
+  font-size: 15px;
+  color:white;
+  width: 80px;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: $red;
+}
+
+.create {
+  background-color: $green;
+}
+
+.update {
+  background-color: $yellow;
+}
