@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './style.scss';
-
+import ReminderList from './container/ReminderList';
 
 class App extends Component {
   // initialize our state
@@ -105,18 +105,7 @@ class App extends Component {
   render() {
     const { data } = this.state;
     return (
-      <div>
-        <ul>
-          {data.length <= 0
-            ? 'NO DB ENTRIES YET'
-            : data.map((dat) => (
-                <li style={{ padding: '10px' }} key={data.message}>
-                  <span style={{ color: 'gray' }}> id: </span> {dat.id} <br />
-                  <span style={{ color: 'gray' }}> data: </span>
-                  {dat.message}
-                </li>
-              ))}
-        </ul>
+      <div className="container">
         <div style={{ padding: '10px' }}>
           <input
             type="text"
@@ -160,6 +149,11 @@ class App extends Component {
             Update
           </button>
         </div>
+          {data.length <= 0 ?
+              'No Reminders So Far.'
+            :
+              <ReminderList list={data} />
+            }
       </div>
     );
   }
