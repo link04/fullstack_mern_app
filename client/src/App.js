@@ -106,26 +106,16 @@ class App extends Component {
     const { data } = this.state;
     return (
       <div className="container">
-        <div style={{ padding: '10px' }}>
+        <h2>Reminders List</h2>
+        <div >
           <input
             type="text"
             onChange={(e) => this.setState({ message: e.target.value })}
-            placeholder="add something in the database"
+            placeholder="Reminder"
             style={{ width: '200px' }}
           />
         <button className="create" onClick={() => this.putDataToDB(this.state.message)}>
             Create
-          </button>
-        </div>
-        <div style={{ padding: '10px' }}>
-          <input
-            type="text"
-            style={{ width: '200px' }}
-            onChange={(e) => this.setState({ idToDelete: e.target.value })}
-            placeholder="put id of item to delete here"
-          />
-        <button className="delete" onClick={() => this.deleteFromDB(this.state.idToDelete)}>
-            Delete
           </button>
         </div>
         <div style={{ padding: '10px' }}>
@@ -152,7 +142,7 @@ class App extends Component {
           {data.length <= 0 ?
               'No Reminders So Far.'
             :
-              <ReminderList list={data} />
+              <ReminderList list={data} deleteHandler={this.deleteFromDB} />
             }
       </div>
     );

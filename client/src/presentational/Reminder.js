@@ -6,6 +6,11 @@ const Reminder = (props) => {
     <tr>
       <td>{props.reminder.id}</td>
       <td>{props.reminder.message}</td>
+      <td>
+        <button className="delete" onClick={() => props.deleteHandler(props.reminder.id)}>
+          Delete
+        </button>
+      </td>
     </tr>
   )
 }

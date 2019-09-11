@@ -5,7 +5,7 @@ class ReminderList extends Component {
 
   render(){
 
-    const reminders = this.props.list.map(reminder => <Reminder key={reminder.id} reminder={reminder} /> );
+    const reminders = this.props.list.map(reminder => <Reminder deleteHandler={this.props.deleteHandler} key={reminder.id} reminder={reminder} /> );
 
     return(
       <table>
@@ -13,6 +13,7 @@ class ReminderList extends Component {
           <tr>
             <th>ID</th>
             <th>Reminder</th>
+            <th>Options</th>
           </tr>
         </thead>
         <tbody>
