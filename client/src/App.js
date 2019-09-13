@@ -3,15 +3,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './style.scss';
 import ReminderList from './container/ReminderList';
+import ReminderForm from './container/ReminderForm';
 
 class App extends Component {
   // initialize our state
   state = {
     data: [],
     id: 0,
-    message: null,
     intervalIsSet: false,
-    idToDelete: null,
     idToUpdate: null,
     objectToUpdate: null,
   };
@@ -21,19 +20,20 @@ class App extends Component {
   // changed and implement those changes into our UI
   componentDidMount() {
     this.getDataFromDb();
-    if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
-      this.setState({ intervalIsSet: interval });
-    }
+    // Commented out because this obviously has a delay when a change is being made to the db
+    // if (!this.state.intervalIsSet) {
+    //   let interval = setInterval(this.getDataFromDb, 1000);
+    //   this.setState({ intervalIsSet: interval });
+    // }
   }
 
   // never let a process live forever
   // always kill a process everytime we are done using it
   componentWillUnmount() {
-    if (this.state.intervalIsSet) {
-      clearInterval(this.state.intervalIsSet);
-      this.setState({ intervalIsSet: null });
-    }
+    // if (this.state.intervalIsSet) {
+    //   clearInterval(this.state.intervalIsSet);
+    //   this.setState({ intervalIsSet: null });
+    // }
   }
 
   // just a note, here, in the front end, we use the id key of our data object
@@ -58,7 +58,7 @@ class App extends Component {
       ++idToBeAdded;
     }
 
-    axios.post('http://localhost:3001/api/putData', {
+    return axios.post('http://localhost:3001/api/putData', {
       id: idToBeAdded,
       message: message,
     });
@@ -77,9 +77,15 @@ class App extends Component {
 
     axios.delete('http://localhost:3001/api/deleteData', {
       data: {
-        id: objIdToDelete,
-      },
+        id: objIdToDelete
+      }
+    })
+    .then(response => {
+      if(response.data.success){
+        this.deleteReminderData(idTodelete)
+      }
     });
+    ;
   };
 
   // our update method that uses our backend api
@@ -99,50 +105,35 @@ class App extends Component {
     });
   };
 
+  updateStateReminders = (reminder) => {
+    const newData = [...this.state.data];
+    newData.push(reminder);
+    this.setState({
+      data: newData
+    });
+  }
+
+  deleteReminderData = (idToDelete) => {
+    const newData = this.state.data.filter(data => data.id !== idToDelete);
+    this.setState({
+      data: newData
+    });
+  }
+
   // here is our UI
   // it is easy to understand their functions when you
   // see them render into our screen
   render() {
     const { data } = this.state;
+
     return (
       <div className="container">
         <h2>Reminders List</h2>
-        <div >
-          <input
-            type="text"
-            onChange={(e) => this.setState({ message: e.target.value })}
-            placeholder="Reminder"
-            style={{ width: '200px' }}
-          />
-        <button className="create" onClick={() => this.putDataToDB(this.state.message)}>
-            Create
-          </button>
-        </div>
-        <div style={{ padding: '10px' }}>
-          <input
-            type="text"
-            style={{ width: '200px' }}
-            onChange={(e) => this.setState({ idToUpdate: e.target.value })}
-            placeholder="id of item to update here"
-          />
-          <input
-            type="text"
-            style={{ width: '200px' }}
-            onChange={(e) => this.setState({ updateToApply: e.target.value })}
-            placeholder="put new value of the item here"
-          />
-        <button className="update"
-            onClick={() =>
-              this.updateDB(this.state.idToUpdate, this.state.updateToApply)
-            }
-          >
-            Update
-          </button>
-        </div>
+        <ReminderForm updateStateReminders={this.updateStateReminders} createHandler={this.putDataToDB} />
           {data.length <= 0 ?
               'No Reminders So Far.'
             :
-              <ReminderList list={data} deleteHandler={this.deleteFromDB} />
+              <ReminderList list={data} updateHandler={this.updateDB} deleteHandler={this.deleteFromDB} />
             }
       </div>
     );

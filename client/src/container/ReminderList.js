@@ -17,7 +17,7 @@ class ReminderList extends Component {
           </tr>
         </thead>
         <tbody>
-          {reminders}
+          {reminders.reverse()}
         </tbody>
       </table>
     )

@@ -10,6 +10,13 @@ const Reminder = (props) => {
         <button className="delete" onClick={() => props.deleteHandler(props.reminder.id)}>
           Delete
         </button>
+        <button className="update"
+            onClick={() =>
+              props.updateDB(this.state.idToUpdate, this.state.updateToApply)
+            }
+          >
+          Update
+        </button>
       </td>
     </tr>
   )
