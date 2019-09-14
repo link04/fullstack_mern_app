@@ -11,8 +11,8 @@ class App extends Component {
     data: [],
     id: 0,
     intervalIsSet: false,
-    idToUpdate: null,
     objectToUpdate: null,
+    idToUpdate: null
   };
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -102,7 +102,8 @@ class App extends Component {
     axios.post('http://localhost:3001/api/updateData', {
       id: objIdToUpdate,
       update: { message: updateToApply },
-    });
+    })
+    .then(response => this.getDataFromDb());
   };
 
   updateStateReminders = (reminder) => {
@@ -120,6 +121,12 @@ class App extends Component {
     });
   }
 
+updateHandler = (reminderObject) => {
+  this.setState({
+    objectToUpdate: reminderObject
+  })
+}
+
   // here is our UI
   // it is easy to understand their functions when you
   // see them render into our screen
@@ -129,11 +136,11 @@ class App extends Component {
     return (
       <div className="container">
         <h2>Reminders List</h2>
-        <ReminderForm updateStateReminders={this.updateStateReminders} createHandler={this.putDataToDB} />
+        <ReminderForm updateDB={this.updateDB} objectToUpdate={this.state.objectToUpdate} updateStateReminders={this.updateStateReminders} createHandler={this.putDataToDB} />
           {data.length <= 0 ?
               'No Reminders So Far.'
             :
-              <ReminderList list={data} updateHandler={this.updateDB} deleteHandler={this.deleteFromDB} />
+              <ReminderList list={data} updateHandler={this.updateHandler} deleteHandler={this.deleteFromDB} />
             }
       </div>
     );
