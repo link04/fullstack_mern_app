@@ -103,7 +103,10 @@ class App extends Component {
       id: objIdToUpdate,
       update: { message: updateToApply },
     })
-    .then(response => this.getDataFromDb());
+    .then(response => {
+      this.getDataFromDb();
+      this.setState({objectToUpdate: null})
+    });
   };
 
   updateStateReminders = (reminder) => {
